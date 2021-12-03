@@ -1,2 +1,2 @@
-# alura-design-patterns-python-1
+# Alura Design Patterns Python I
 Curso de Design Patterns Python I da Plataforma Alura
