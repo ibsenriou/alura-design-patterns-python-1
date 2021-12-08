@@ -1,5 +1,7 @@
 from datetime import date
 
+
+
 class Item(object):
 
     def __init__(self, descricao, valor):
@@ -17,7 +19,7 @@ class Item(object):
 
 class NotaFiscal(object):
 
-    def __init__(self, razao_social, cnpj, itens, data_de_emissao=date.today(), detalhes=''):
+    def __init__(self, razao_social, cnpj, itens, data_de_emissao=date.today(), detalhes='', observadores=[]):
         self.__razao_social = razao_social
         self.__cnpj = cnpj
         self.__data_de_emissao = data_de_emissao
@@ -25,6 +27,9 @@ class NotaFiscal(object):
             raise Exception('Detalhes da nota não pode ter mais do que 20 caracteres')
         self.__detalhes = detalhes
         self.__itens = itens
+
+        for observador in observadores:
+            observador(self)
 
     @property
     def razao_social(self):
@@ -45,6 +50,8 @@ class NotaFiscal(object):
 
 if __name__ == '__main__':
 
+    from observadores import imprime, envia_por_email, salva_no_banco
+
     from criador_de_nota_fiscal import CriadorDeNotaFiscal
 
     itens = [
@@ -58,16 +65,7 @@ if __name__ == '__main__':
         'FHSA Limitada',
         '01234556681234',
         itens,
-        date.today(),
-        ''
+        observadores=[imprime, envia_por_email, salva_no_banco]
     )
 
-    nota_fiscal_com_construtor = CriadorDeNotaFiscal()\
-        .com_razao_social('FHSA LIMITADA')\
-        .com_cnpj('0123923716238')\
-        .com_itens(itens)
 
-    nota_fiscal_com_construtor2 = CriadorDeNotaFiscal()\
-        .com_cnpj('219831293789')\
-        .com_razao_social('XABLAU CORP')\
-        .com_itens(itens)
