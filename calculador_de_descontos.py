@@ -14,6 +14,7 @@ class CalculadorDeDescontos(object):
         return desconto.calcular(orcamento)
 
 
+
 if __name__ == '__main__':
 
     from orcamento import Orcamento, Item
